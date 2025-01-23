@@ -1,0 +1,14 @@
+<form method="POST">
+    <input type="text" name="search" placeholder="Buscar devocionais..." required>
+    <button type="submit">Buscar</button>
+</form>
+
+{% if devocionais %}
+    <ul>
+    {% for devocional in devocionais %}
+        <li>{{ devocional.content }} - {{ devocional.created_at.strftime('%d/%m/%Y') }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Nenhum devocional encontrado.</p>
+{% endif %}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Devocionais</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Meus Devocionais</h1>
+        <nav>
+            <a href="{{ url_for('dashboard') }}">Voltar para o Painel</a>
+        </nav>
+    </header>
+    
+    <section>
+        <div class="devocionais-container">
+            {% for devocional in devocionais %}
+                <div class="devocional-card">
+                    <div class="devocional-header">
+                        <h3>Devocional {{ loop.index }}</h3>
+                    </div>
+                    <div class="devocional-content">
+                        <p>{{ devocional.content }}</p>
+                    </div>
+                    <div class="devocional-footer">
+                        <p><small>Criado em: {{ devocional.created_at }}</small></p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</body>
+</html>

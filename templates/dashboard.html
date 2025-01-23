@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Devocionais</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Bem-vindo ao Painel de Devocionais</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('meus_devocionais') }}">Meus Devocionais</a></li>
+                <li><a href="{{ url_for('meus_devocionais_favoritos') }}">Favoritos ❤️</a></li>
+                <li><a href="{{ url_for('sortear_versiculo') }}">Sorteie um Versículo</a></li>
+                <li><a href="{{ url_for('logout') }}">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Seção de criação de novos devocionais -->
+        <section>
+            <h2>Crie um Novo Devocional</h2>
+            <form action="{{ url_for('dashboard') }}" method="POST">
+                <textarea name="content" placeholder="Escreva seu devocional aqui..." required></textarea>
+                <button type="submit">Salvar Devocional</button>
+            </form>
+        </section>
+
+        <!-- Seção de exibição dos devocionais -->
+        <section>
+            <h2>Seus Devocionais</h2>
+            {% if devocionais %}
+                <div class="devocionais-container">
+                    {% for devocional in devocionais %}
+                        <div class="devocional-card">
+                            <div class="devocional-header">
+                                <h3>Devocional {{ loop.index }}</h3>
+                            </div>
+                            <div class="devocional-content">
+                                <p>{{ devocional.content }}</p>
+                            </div>
+                            <div class="devocional-footer">
+                                <p><small>Criado em: {{ devocional.created_at.strftime('%d/%m/%Y %H:%M') }}</small></p>
+                                
+                                <!-- Botão para favoritar ou desfavoritar -->
+                                <form action="{{ url_for('favoritar_devocional', id=devocional.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit">
+                                        {% if devocional.is_favorite %}
+                                            ❤️ Favorito
+                                        {% else %}
+                                            🖤 Favoritar
+                                        {% endif %}
+                                    </button>
+                                </form>
+
+                                <!-- Botão para excluir devocional -->
+                                <form action="{{ url_for('delete_devocional', id=devocional.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este devocional?')">Excluir</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Você ainda não criou nenhum devocional.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Conforto da Palavra. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
